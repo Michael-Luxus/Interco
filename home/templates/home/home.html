@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheet %}
+    <link type="text/css" href="{% static 'home/style.css' %}" rel="stylesheet">
+{% endblock stylesheet %}
+
+{% block title %}
+    <title>Home</title>
+{% endblock %}
+
+{% block main_content %}
+    <div class="container" style="display:inline;"> 
+        <ul class="navbar">
+            <li class="nav-item">
+                <a style="text-decoration:none" href="{% url 'detail:detail' %}">
+                    <button><i class="fas fa-list"></i>&nbsp; Détail par societé</button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a style="text-decoration:none" href="{% url 'recap:recap' %}">
+                    <button><i class="fas fa-table"></i>&nbsp; Récap</button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a style="text-decoration:none" href="{% url 'grandlivre:grandlivre' %}">
+                    <button><i class="bi bi-book"></i>&nbsp; Grand livre personalisé</button>
+                </a>
+            </li>
+            {% if access %} 
+                <li class="nav-item">
+                    <a style="text-decoration:none" href="{% url 'tiers:tiers' %}">
+                        <button><i class="fas fa-industry"></i>&nbsp; Plan tiers</button>
+                    </a>
+                </li>
+            {% endif %} 
+            <li class="nav-item">
+                <a style="text-decoration:none" href="{% url 'gap:gap' %}">
+                    <button><i class="bi bi-zoom-out"></i>&nbsp; Gap</button>
+                </a>
+            </li>
+        </ul>  
+    </div>
+{% endblock %}
+
+{% block scriptlocal %}
+    <script src="{% static 'home/script.js' %}"></script>
+{% endblock %}

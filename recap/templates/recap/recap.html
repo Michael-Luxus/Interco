@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+    <title>Interco - Recap</title>
+{% endblock %}
+
+{% block head %}
+    <!-- for Local import -->
+    <link type="text/css" href="{% static 'recap/style.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block stylesheet %}
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        td.highlight {
+            background-color: whitesmoke !important;
+        }
+
+        .dt-buttons a .glyphicon {
+            visibility: hidden;
+        }
+
+        .dt-buttons a:hover .glyphicon {
+            visibility: visible;
+        }
+
+        td.highlight {
+            background-color: whitesmoke !important;
+        }
+
+        html.dark td.highlight {
+            background-color: rgba(var(--dt-row-hover), 0.082) !important;
+        }
+
+        
+    </style>
+{% endblock stylesheet %}
+
+
+{% block main_content %}
+
+
+
+<br>
+<form action="{% url 'recap:recap' %}" method="GET">
+    <div class="popup-body">
+        <label for="start-date">Mois de début:</label>
+        <input type="month" id="start-date" name="start-date" value="{{date_debut}}" onchange="validateDatesRecap()">
+        <label for="end-date">Mois de fin:</label>
+        <input type="month" id="end-date" name="end-date" value="{{date_fin}}" onchange="validateDatesRecap()">
+        <button type="submit" onClick="showLoader()" class="btn btn-primary p-1" id="validate-button">Valider</button>
+        <button type="submit" style="display:none" class="btn btn-success p-1" onClick="showBriefLoad(0)" id="export-button" name="export" value="true">Exporter</button>
+    </div>
+</form>
+
+
+
+
+<table id="example" class="display row-border hover order-column table table-striped table-bordered dataTable mt-5 nowrap" cellspacing="0" width="65%" role="grid" aria-describedby="example_info" style="width: 100%;">
+    <thead>
+        <tr>
+            <th style="background-color: white; margin-top:20px; font-size: 11px!important;color: white"></th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">INVISO</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">AGRIFARM</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">AGRIFEED</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">AGRIKOBA</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">AGRIMOTORS</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">AGRIVAL</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">AGRIVET</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">AGRIVET ANTSIRABE</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">AGRIVET ANTSIRANANA</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">AGRIVET FIANARANTSOA</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">AGRIVETAM</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">BLAST</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">BOVIMA</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">EUROPAINTS</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">FARMANTSIKA</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">FIRST ENERGY</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">FLY LEASE</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">FLY TECHNOLOGIES</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">ID MOTORS</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">ID RENTAL</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">IDF</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">INTERKEM</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">INVISO DISTRIBUTION</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">IOI SALAMA</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">MABEL</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">NUTRIFOOD</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">ONG BOVIMA</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">RYA</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">SCIFD</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">NOAH</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">SIM</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">SMTP</th>
+            <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">UNITED MALAGASY</th>
+
+        </tr>
+    </thead>
+        <tbody>
+            {% for societe in societes_list %}
+                <tr>
+                    <th style="background-color: #005ec2; margin-top: 20px; font-size: 11px !important;color: white;">
+                        {{societe}}
+                    </th>
+
+                    {% for societe2 in societes_list%}
+                        {% if societe == societe2 %}
+                            <td class=" bg-warning"></td>
+                        {% else %}
+                            {% for row in content %}
+                                {% if row.societex == societe and row.societey == societe2 %}
+                                    <td>{{ row.valeur }}</td>
+                                {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                    {% endfor %}
+
+                </tr>
+            {% endfor %}
+        </tbody>
+</table>
+
+
+
+<script>
+    function onPageLoad() {
+        date_field = document.getElementById("start-date").value;
+        if (date_field != "") {
+            document.getElementById("export-button").style.display = "inline";
+        }
+        hideLoader();
+    }
+
+    window.onload = onPageLoad;
+</script>
+
+{% endblock %}
+
+
+

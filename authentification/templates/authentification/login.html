@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>LOGIN</title>
+    <link rel="stylesheet" href="{% static 'authentification/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'authentification/css/login.css' %}">
+
+</head>
+<body>
+    
+        <div class="limiter">
+            <div class="container-login100">
+                <div class="wrap-login100">
+                    <div class="login100-form-title p-b-48 mt-5">
+                        <img src="{% static 'assets/img/Inviso.png' %}" alt="Logo Inviso" width="250">
+                    </div>
+                    <form action="{% url "auths:login" %}" method="post" class="login100-form validate-form">
+                        {% csrf_token %}
+                        <input name="method" id="method" type="hidden" value="Empty"/>
+                        <input name="nonce" id="nonce" type="hidden" value="Empty"/>
+                        <input name="appid" id="appid" type="hidden" value="11"/>
+                        <input name="host" id="host" type="hidden" value="Empty"/>
+                        <input name="uri" id="uri" type="hidden" value="Empty"/>
+                        <h6 class="Message">
+                            Veuillez entrer votre nom d'utilisateur et votre mot de passe pour
+                            continuer.
+                        </h6>
+                        <div class="wrap-input100 validate-input" for="ft_un">
+                            {{ forms.username }}
+                        </div>
+    
+                        <div class="wrap-input100 validate-input" for="ft_pd">
+                              <span class="btn-show-pass">
+                                <i class="zmdi zmdi-eye"></i>
+                              </span>
+                            {{ forms.password }}
+                        </div>
+    
+                        <div class="container-login100-form-btn">
+                            <div class="wrap-login100-form-btn">
+                                <div class="login100-form-bgbtn"></div>
+                                <button  name="submit" id="submit" class="login100-form-btn" type="submit" title="Login" >
+                                    Se connecter
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    
+    
+        <div class="container-fluid d-flex justify-content-center mt-3">
+            {% if user.is_authenticated %}
+                <div class="container col-5 alert alert-info text-center">
+                    Vous êtes déjà connectés
+                </div>
+            {% endif %}
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        <div class="alert alert-danger">
+                            <strong>{{ message.tags|title }}!</strong> {{ message.message }}
+                        </div>
+                    {% elif message.tags == 'warning' %}
+                        <div class="alert alert-warning">
+                            <strong>{{ message.tags|title }}!</strong> {{ message.message }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success">
+                            <strong>{{ message.tags|title }}!</strong> {{ message.message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+                integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+                crossorigin="anonymous"></script>
+
+</body>
+</html>
+

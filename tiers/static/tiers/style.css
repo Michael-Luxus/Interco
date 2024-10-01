@@ -1,0 +1,199 @@
+
+thead th {
+    background-color: #003366; /* Bleu foncé pour les en-têtes */
+    color: white; /* Texte en blanc */
+}
+
+
+/* Styles for the pop-up */
+
+.popup {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    top: 25%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    z-index: 1001; /* Sit on top */
+    overflow: hidden;
+}
+.popup-content {
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+}
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+.popup-header h2 {
+    margin: 0;
+    color: #333;
+}
+.close {
+    color: #aaa;
+    font-size: 24px;
+    cursor: pointer;
+}
+.close:hover {
+    color: #000;
+}
+.popup-body {
+    padding: 20px;
+}
+.popup-body label {
+    display: block;
+    margin-top: 5px;
+    color: #555;
+}
+.popup-body input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.popup-footer {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    background-color: #f7f7f7;
+}
+.popup-footer button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.popup-footer button.cancel {
+    background-color: #6c757d;
+}
+.popup-footer button:hover {
+    opacity: 0.9;
+}
+.popup-footer button.cancel:hover {
+    opacity: 0.9;
+}
+.popup-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+
+/* page de choix d'action a faire */
+
+/* Styles pour la navbar */
+.navbar {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+}
+
+.nav-item {
+    display: inline-block; 
+    margin: 4% 5%; 
+}
+
+.nav-item button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px); 
+}
+
+.nav-item button {
+    background-color: #007bff; 
+    color: white;
+    border: none;
+    padding: 20px 40px; 
+    font-size: 20px; 
+    border-radius: 10px; 
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+    width: 300px; 
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centre le contenu dans le bouton */
+    text-align: center;
+}
+
+.nav-item button i {
+    font-size: 24px;
+    margin-right: 10px; /* Espace entre l'icône et le texte */
+}
+
+
+/* ---------------------------------- */
+
+.edit {
+    /*background-color: #007bff;*/
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    padding: 0;
+    
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+
+/* ---------------------------------- */
+
+.table-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns, equal width */
+    gap: 0; /* No spacing between items */
+    border-collapse: collapse; /* Collapse borders for tight spacing */
+}
+
+.table-container span, 
+.table-container input {
+    padding: 10px;
+    border: 1px solid #ccc; /* Border for each cell */
+    text-align: center; /* Center the text */
+    background-color: #f9f9f9; /* Light background for cells */
+}
+
+.table-container.header span {
+    background-color: #e0e0e0; /* Different background for header */
+    font-weight: bold; /* Bold text for header */
+}
+
+.table-container.content input {
+    background-color: #fff; /* White background for input fields */
+    border: 1px solid #ccc; /* Border for input fields */
+}
+
+.table-container span, 
+.table-container input {
+    box-sizing: border-box; /* Ensure padding and border are included in element's total width and height */
+}
+
+tbody td {
+    font-size: 11px !important;
+
+}
+
+
+
+
+

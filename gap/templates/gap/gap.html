@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Gap</title>
+{% endblock %}
+
+
+{% block head %}
+    <!-- for Local import -->
+    <link type="text/css" href="{% static 'detail/style.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block main_content %}
+<div class="container" >
+    <br>
+    <h3 class="text-center" style="position: relative; text-align: center;">GAP</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <!-- Sélecteur Société 1 -->
+            <div class="col-md-6">
+                <label for="societe_select_1" class="form-label fw-bold">Nom de la société 1 :</label>
+                <select name="societe_select_1" id="societe_select_1" class="form-select" onchange="validateDatesDetail()" required>
+                    <option value="">-----------------</option>
+                    {% for societe in societes %}
+                    <option value="{{ societe.SOCNAME }}" {% if societe.SOCNAME == societe_select_1 %} selected {% endif %}>
+                        {{ societe.SOCNAME }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Sélecteur Société 2 -->
+            <div class="col-md-6">
+                <label for="societe_select_2" class="form-label fw-bold">Nom de la société 2 :</label>
+                <select name="societe_select_2" id="societe_select_2" class="form-select" onchange="validateDatesDetail()" required>
+                    <option value="">-----------------</option>
+                    {% for societe in societes %}
+                    <option value="{{ societe.SOCNAME }}" {% if societe.SOCNAME == societe_select_2 %} selected {% endif %}>
+                        {{ societe.SOCNAME }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <br>
+        <label for="start-date">Mois de début:</label>
+        <input type="month" id="start-date" name="start-date" onchange="validateDatesDetail()" value="{{ date_debut }}">
+        <label for="end-date">Mois de fin:</label>
+        <input type="month" id="end-date" name="end-date" onchange="validateDatesDetail()" value="{{ date_fin }}">
+        <button type="submit" onClick="showLoader()" id="validate-button" style="position: relative; margin: 0 0 0 7px;" class="btn btn-primary p-1">Valider</button>
+    </form>
+
+
+
+        
+<!-- Tableau croisé -->
+<!-- <table id="table_croise" class="display row-border hover order-column table table-striped table-bordered dataTable mt-5 nowrap" width="50%" style="flex: 1; margin: 10px; color: #005ec2;">
+    <thead class="default">
+        <tr style="background-color: #005ec2; color: white; font-size: 11px!important; text-align: center;">
+            <th>{{ societe_select_1 }}</th>
+            <th>{{ societe_select_2 }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+    </tbody>
+</table> -->
+<table id="table_croise" class="display row-border hover order-column table table-striped table-bordered dataTable mt-5 nowrap" width="100%" style="margin: 10px; color: #005ec2;">
+    <thead class="default">
+        <tr style="background-color: #005ec2; color: white; font-size: 11px!important; text-align: center;">
+            <th  style="background-color: #f2f8ff;""></th> <!-- Case vide pour l'intersection des en-têtes -->
+            <th>{{ societe_select_1 }}</th>
+            <th>{{ societe_select_2 }}</th> <!-- En-tête horizontal -->
+        </tr>
+        <tr>
+            <th style="background-color: #005ec2; color: white; font-size: 11px!important; text-align: center;">{{ societe_select_1 }}</th>
+<!-- En-tête vertical -->
+            <td></td> <!-- Cellule vide pour l'intersection -->
+        </tr>
+    </thead>
+    <tbody>
+        <tr></th>
+            <th style="background-color: #005ec2; color: white; font-size: 11px!important;text-align: center;">{{ societe_select_2 }}</th> <!-- En-tête vertical -->
+            <td><!-- Valeur croisée (données entre societe_select_1 et societe_select_2) --></td>
+        </tr>
+    </tbody>
+</table>
+</div>
+{% endblock %}

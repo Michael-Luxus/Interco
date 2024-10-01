@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Edition{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">Edition</a></h1>
+{% endblock %}
+
+
+{% block content_title %}
+    <h1></h1>
+{% endblock %}
+
+
+{% block nav-global %}
+    <div id="user-tools-custom">
+        {% if request.user.is_authenticated %}
+            {% comment %} <strong>{{ request.user.get_username }}</strong> {% endcomment %}
+            <strong><a href="/">Accueil</a></strong>&nbsp;&nbsp;
+            {% comment %} <a href="{% url 'admin:password_change' %}">Change Password</a> | {% endcomment %}
+            <a href="{% url 'admin:logout' %}">Log out</a>&nbsp;&nbsp;
+
+            <button class="theme-toggle">
+                <span class="visually-hidden theme-label-when-auto">Toggle theme (current theme: auto)</span>
+                <span class="visually-hidden theme-label-when-light">Toggle theme (current theme: light)</span>
+                <span class="visually-hidden theme-label-when-dark">Toggle theme (current theme: dark)</span>
+                <svg aria-hidden="true" class="theme-icon-when-auto">
+                  <use xlink:href="#icon-auto"></use>
+                </svg>
+                <svg aria-hidden="true" class="theme-icon-when-dark">
+                  <use xlink:href="#icon-moon"></use>
+                </svg>
+                <svg aria-hidden="true" class="theme-icon-when-light">
+                  <use xlink:href="#icon-sun"></use>
+                </svg>
+            </button>
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+
+
+
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
+{% endblock %}
+
+
+{% block extrahead %}
+    <script src="{% static 'main/script.js' %}"></script>
+{% endblock %}

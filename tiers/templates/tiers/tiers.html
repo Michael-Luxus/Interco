@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Tiers</title>
+{% endblock %}
+
+{% block head %}
+    <!-- for Local import -->
+    <link type="text/css" href="{% static 'tiers/style.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block main_content %}
+<div class="container">
+    <br>
+    <h3 class="text-center mb-5" style="position: relative; text-align: center;">TIERS PAR SOCIETE</h3>
+    <form>
+        <label for="societe_select" class="form-label fw-bold">&nbsp; Nom de la société :</label>
+        <select name="societe_select" id="societe_select" class="form-select" onchange="validateDatesDetail()" required>
+            <option value="" selected>-----------------</option>
+            {% for societe in societes %}
+                <option value="{{ societe.SOCNAME }}" >{{ societe.SOCNAME }}</option>
+            {% endfor %}
+        </select>
+        <button type="button" class="btn btn-success mt-3" style="display:none" id="export-button" onclick="exportData()">Exporter</button>
+    </form>
+
+    
+    <div id="popup-overlay_tier" style="display: none" class="popup-overlay" onclick="handleOverlayClick(event)"></div>
+    <div id="popup_tier" class="popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <span class="close" onclick="closePopupTier()">&times;</span>
+            </div>
+            <div class="popup-body">
+                <form>
+                    <label for="" class="form-label fw-bold">Nom de la société: <span name="span_societe" id="span_societe"></span></label>
+                    <div class="table-container header">
+                        <span>CODE</span>
+                        <span>INTITULE</span>
+                        <span>TIERS</span>
+                        <span>COMPTEGENERAL</span>
+                    </div>
+                    <div class="table-container content">
+                    </div>
+                </form>
+                <div class="popup-footer">
+                    <button type="button" class="bg-success" id="modifier-tier">Modifier</button>
+                    <button type="button" class="cancel" onclick="closePopupTier(0)">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table id="example" class="display row-border hover order-column table table-striped table-bordered dataTable mt-5 nowrap" border-collapse:"collapse" width="50%" role="grid" aria-describedby="example_info" style="width: 100%;" style="color: #005ec2;">
+        <thead class="default">
+            <tr role="row" style="background-color: #005ec2; color: white; margin-top:20px; font-size: 11px!important; text-align: center;">
+                <th> CODE TIERS </th>
+                <th > INTITULE </th>
+                <th> TIERS </th>
+                <th> COMPTEGENERAL </th>
+                <th>  </th>
+            </tr>
+        </thead>
+        <tbody class="default">
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+  
+
+{% block scriptlocal %}
+    <script>
+        $(function() {            
+            $('#societe_select').change(function(){
+                var societe = $('#societe_select').val();
+                console.log(societe)
+                if (societe != '') {
+                    document.getElementById("export-button").style.display = "inline";
+                } else {
+                    document.getElementById("export-button").style.display = "none";
+                }
+                var value = $(this).val();
+                $('tbody').html('');
+                $.get("{% url 'tiers:listTiers' %}", { 'societe': value }, function(response) {
+                    var data = response.data;                        
+                    for (var i of data) { $('tbody')
+                        .append('<tr id="' + i.id + '"><td>' + i.code + '</td><td>' + i.intitule + '</td><td>' + i.tiers + '</td><td>' + i.compte + '</td><td><span tr_id="' + i.id + '"  tr_soc="' + value + '"  tr_tiers="' + i.tiers + '"  tr_code="' + i.code + '"  tr_compteg="' + i.compte + '"  tr_intitule="' + i.intitule + '" class="edit" style="color:green; font-weight: bolder;"><a>MODIFIER</a></span></td></tr>');
+                    }
+                    $('.edit').click(function(){  
+                        var id = $(this).attr('tr_id');
+                        $('#span_societe').text($(this).attr('tr_soc'));
+                        showPopupTier();
+                        $('.content').html('<input type="hidden" id="line_modif" name="id" id_line="' + id + '" value="' + $(this).attr('tr_soc')+'"><input type="text" name="code" value="' + $(this).attr('tr_code')+'"><input type="text" name="intitule" value="' + $(this).attr('tr_intitule')+'"><input type="text" name="tiers" value="' + $(this).attr('tr_tiers')+'"><input type="text" name="compteg" value="' + $(this).attr('tr_compteg')+'">');
+                    });
+                });               
+            });
+            $('#modifier-tier').click(function(){ 
+                var userConfirmed = confirm("Are you sure you want to update the data?");
+                if (userConfirmed) {
+                    var id = $('#line_modif').attr('id_line'); 
+                    var code = $('input[name="code"]').val();
+                    var intitule = $('input[name="intitule"]').val();
+                    var tiers = $('input[name="tiers"]').val();
+                    var compteg = $('input[name="compteg"]').val();
+                    var societe = $('#societe_select').val();
+                    $.get("{% url 'tiers:modif_Tiers' %}", { 'id': id, 'code':code, 'intitule':intitule, 'tiers':tiers, 'compteg':compteg, 'societe':societe  }, function(response) { 
+                        console.log(response)
+                        var data = response.data;
+                        var html = '';
+                        for (var i of data) { 
+                            html += '<tr id="' + i.id + '"><td>' + i.code + '</td><td>' + i.intitule + '</td><td>' + i.tiers + '</td><td>' + i.compte + '</td><td><span tr_id="' + i.id + '"  tr_soc="' + id + '"  tr_tiers="' + i.tiers + '"  tr_code="' + i.code + '"  tr_compteg="' + i.compte + '"  tr_intitule="' + i.intitule + '" class="edit">✎</span></td></tr>';
+                        }
+                        $('tbody').html(html);
+                        $('#popup-overlay_tier').css('display', 'none');
+                        $('#popup_tier').css('display', 'none');
+                        $('.edit').click(function(){  
+                            var id = $(this).attr('tr_id');
+                            $('#span_societe').text($(this).attr('tr_soc'));
+                            showPopupTier();
+                            $('.content').html('<input type="hidden" id="line_modif" name="id" id_line="' + id + '" value="' + $(this).attr('tr_soc')+'"><input type="text" name="code" value="' + $(this).attr('tr_code')+'"><input type="text" name="intitule" value="' + $(this).attr('tr_intitule')+'"><input type="text" name="tiers" value="' + $(this).attr('tr_tiers')+'"><input type="text" name="compteg" value="' + $(this).attr('tr_compteg')+'">');
+                        });
+                    });
+                }
+            });
+        });
+        function exportData() {
+            // Submit the form via POST to trigger the export
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '';
+        
+            // Add CSRF token for security
+            var csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = 'csrfmiddlewaretoken';
+            csrfInput.value = '{{ csrf_token }}';
+            form.appendChild(csrfInput);
+        
+            // Add a hidden field to indicate the export action
+            var exportInput = document.createElement('input');
+            exportInput.type = 'hidden';
+            exportInput.name = 'export';
+            exportInput.value = 'true';
+            form.appendChild(exportInput);
+        
+            // Append the form to the body and submit
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+    </script>
+    <script src="{% static 'tiers/script.js' %}"></script>
+{% endblock %}

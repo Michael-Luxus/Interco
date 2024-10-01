@@ -1,0 +1,17 @@
+
+#content-related, #user-tools {
+    display: none;
+}
+
+
+html[data-theme="dark"], :root {
+    --primary: #0056b3;
+    --secondary: #007bff;
+}
+
+html[data-theme="light"], :root {
+    --primary: #0056b3;
+    --secondary: #007bff;
+    --breadcrumbs-bg: var(--primary);
+
+}

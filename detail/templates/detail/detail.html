@@ -1,0 +1,333 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Détails</title>
+{% endblock %}
+
+
+{% block head %}
+    <!-- for Local import -->
+    <link type="text/css" href="{% static 'detail/style.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+
+
+{% block main_content %}
+    <div class="container">
+        <br>
+        <h3 class="text-centerdeactivate
+        " style="position: relative; text-align: center;">DETAILS PAR SOCIETE</h3>
+        {% comment %} <form style="margin:0 20px"> {% endcomment %}
+            <form method="POST">
+                {% csrf_token %}
+                <label for="societe_select" class="form-label fw-bold">Nom de la société :</label>
+                <select name="societe_select" id="societe_select" class="form-select" onchange="validateDatesDetail()" required>
+                    <option value="">-----------------</option>
+                    {% for societe in societes_list %}
+                        <option value="{{ societe }}" {% if societe == societe_select %} selected {% endif %}>{{ societe }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+
+                <label for="start-date">Mois de début:</label>
+                <input type="month" id="start-date" name="start-date" onchange="validateDatesDetail()" value="{{ date_debut }}">
+                <label for="end-date">Mois de fin:</label>
+                <input type="month" id="end-date" name="end-date" onchange="validateDatesDetail()" value="{{ date_fin }}">
+                <button type="submit" onClick="showLoader()" id="validate-button" style="position: relative; margin: 25px 0 0 20px;" class="btn btn-primary p-1">Valider</button>
+                {% comment %} <button type="submit" onClick="showBriefLoad(5000)" name="export" value="export" id="validate-button" class="btn btn-success p-1">Exporter</button> {% endcomment %}
+                <button type="submit" class="btn btn-success p-1" style="position: relative; margin: 25px 0 0 10px; " onClick="showBriefLoad(0)" id="export-button" name="export" value="true">Exporter</button>
+
+            </form>
+
+
+            <form>
+            <table id="example" class="display row-border hover order-column table table-striped table-bordered dataTable mt-5 nowrap" border-collapse="collapse" width="50%" role="grid" aria-describedby="example_info" style="width: 100%;" style="color: #005ec2;">
+                <thead class="default">
+                    <tr role="row" style="background-color: #005ec2; color: white; margin-top:20px; font-size: 11px!important; text-align: center;">
+                        <th> TIERS </th>
+                        <th> INTERCO GLOBAL </th>
+                        <th> INTERCO FINANCIER </th>
+                        <th> INTERCO COMPTE COURANT </th>
+                        <th> INTERCO COMMERCIAL </th>
+                        <th> INTERCO ND-REFACTURATION </th>
+                        <th> AUTRE </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tiers in tiers_list %}
+                    <tr>
+                        <th style="background-color: #005ec2; margin-top:20px; font-size: 11px!important;color: white">{{ tiers }}</th>
+                        {% for type in type_interco %}
+                            {% for row in content %}
+                                {% if row.tiers == tiers and row.type_interco == type %}
+                                    <td class=" {% if row.valeur == '0,00' %}zero-value{% endif %}">
+                                        {% if row.valeur != "0,00" %}
+                                            <a id="openModal" class="link_element_detail" onclick="openPopupTier('{{ tiers }}', '{{type}}')">{{ row.valeur }}</a>
+                                        {% else %}
+                                            {{ row.valeur }}
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                    
+
+
+                                    
+
+
+                    <!-- ############################################################## -->
+
+
+                    <div id="popupModal" class="modal">
+                        <div id="parent_g" class="modal-content" style="padding: 30px;">
+                            <span class="close-button">&times;</span>
+                            <br>
+                            
+                            <h3 id="popup_title" class="form-label fw-bold">Nom de la société: 
+                                <span name="span_societe" id="span_societe"></span>
+                            </h3>
+                            <br>
+
+                            <div style="display: flex">
+                                <div class="header_span">COMPTE</div>
+                                <div class="header_span">INTITULE_COMPTE</div>
+                                <div class="header_span">DATE_COMPTABLE</div>
+                                <div class="header_span">DATE_SAISIE</div>
+                                <div class="header_span">JOURNAL</div>
+                                <div class="header_span">PIECE</div>
+                                <div class="header_span">FACTURE</div>
+                                <div class="header_span">LIBELLE</div>
+                                <div class="header_span">TIERS</div>
+                                <div class="header_span">INTITULE_TIERS</div>
+                                <div class="header_span">ECHEANCE</div>
+                                <div class="header_span">LETTRAGE</div>
+                                <div class="header_span">DEBIT</div>
+                                <div class="header_span">CREDIT</div>
+                                <div class="header_span">TYPE_LETTRAGE</div>
+                                <div class="header_span">SOLDE</div>
+                                <div class="header_span">INTERCO</div>
+                                <div class="header_span">ANNEE_MOIS</div>
+                                <div class="header_span">TYPE_INTERCO</div>
+                            </div>
+
+                            <div id="res_content">
+                                <div style="display: flex">
+                                </div>
+                            </div>
+
+
+
+                            <br><br><br>
+                            <div class="cont_btn">
+                                <button type="submit" name="export_pop" value="true" style="margin: 0 70px;">Exporter</button>
+                                <button type="button" style="background:#0d6efd" id="cancelButton">OK</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <style>
+                    .zero-value {
+                        text-align: center; /* Center the content horizontally */
+                    }
+
+                    .link_element_detail {
+                        color: black;
+                        text-decoration: none;
+                        cursor: pointer;
+                    }
+
+                    .modal-content {
+                        background-color: white;
+                        margin: 10% auto;
+                        padding: 20px;
+                        border: 1px solid #888;
+                        width: 90%; /* Set overall width to 90% */
+                        border-radius: 8px;
+                        text-align: left;
+                        position: relative;
+                    }
+
+                    .close-button {
+                        color: #aaa;
+                        position: absolute;
+                        right: 15px;
+                        top: 15px;
+                        font-size: 28px;
+                        font-weight: bold;
+                        cursor: pointer;
+                    }
+
+                    .close-button:hover,
+                    .close-button:focus {
+                        color: black;
+                        text-decoration: none;
+                        cursor: pointer;
+                    }
+
+                    /* Specific styles for the popup table */
+                    .popup-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 20px;
+                    }
+
+                    .popup-table th, .popup-table td {
+                        border: 1px solid #ccc;
+                        padding: 8px 12px;
+                        text-align: center;
+                    }
+
+                    .popup-table th {
+                        background-color: #e0e0e0;
+                        font-weight: bold;
+                    }
+
+                    .popup-table td {
+                        background-color: #f9f9f9;
+                    }
+
+                    .cont_btn {
+                        right: 15px;
+                        position: absolute;
+                        bottom: 15px;
+                    }
+
+                    button {
+                        padding: 10px 15px;
+                        font-size: 16px;
+                        margin-top: 20px;
+                        cursor: pointer;
+                        border: none;
+                        background-color: #4CAF50;
+                        color: white;
+                        border-radius: 5px;
+
+                        right: 15px;
+                        position: absolute;
+                        bottom: 15px;
+                    }
+
+                    button:hover {
+                        background-color: #45a049;
+                    }
+
+
+                    .header_span, .content_span {
+                        flex: 1; /* Equal width for all spans */
+                        border: 1px solid #ccc; /* Light border for table look */
+                        padding: 10px; /* Padding for spacing */
+                        text-align: center; /* Center text */
+                        background-color: #f2f2f2; /* Light gray background for headers */
+                        word-break: break-word;
+                    }
+                    .content_span {
+                        background-color: transparent; /* Light gray background for headers */
+                    }
+
+                    #popupModal {
+                        background-color: rgba(0, 0, 0, 0.424);
+                    }
+
+                    </style>
+
+                    <script>
+
+                        function openPopupTier(tiers, type) {
+
+                            if (modal != null) {
+                            // ouvre le popup
+                            modal.style.display = "block";
+
+                            // titre
+                            var popup_title = document.getElementById("popup_title");
+                            var societe_select = document.getElementById("societe_select");
+                            popup_title.innerHTML = "SOCIETE " + societe_select.value
+
+
+                            // contenue
+                            var content_popup = document.getElementById("content_popup");
+                            var res_content = document.getElementById("res_content");
+                            // content_popup.innerHTML = "value"
+
+                            var start = $('#start-date').val();
+                            var end = $('#end-date').val(); 
+
+
+                            // Récupérer l'URL avec la balise
+                            const url = "{% url 'detail:detail_Individuel' %}" +
+                                    "?societe_select=" + societe_select.value + 
+                                    "&start=" + start + 
+                                    "&end=" + end + 
+                                    "&tiers=" + tiers + 
+                                    "&type=" + type 
+                                    ;
+
+                        
+                            // Envoyer une requête à l'URL pour récupérer le JSON
+                            fetch(url)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Erreur lors de la récupération du JSON');
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    
+                                    content = data['data'];
+                                    valeurHtml = "";
+                                    for (let elm of content) {
+                                        valeurHtml += '<div style="display: flex">';
+                                        for (let k in elm) {
+                                            valeurHtml += '<div class="content_span">' + elm[k] + '</div>';
+                                        }
+                                        valeurHtml += '</div>';
+                                    }
+                                    res_content.innerHTML = valeurHtml;
+
+
+                                })
+                                .catch(error => {
+                                console.error('Erreur:', error);
+                                });
+                    
+                            }
+                        }
+
+
+
+
+                    </script>
+
+
+<!-- ############################################################## -->
+
+                    <!-- Total Row -->
+                    <tr>
+                        <th style="background:#95fff6" class="text-center bold p-1">TOTAL</th>
+                        <td class="text-center" style="font-weight: 700!important;">{{ total_values.global }}</td>
+                        <td class="text-center bold" style="font-weight: 700!important;">{{ total_values.Financier }}</td>
+                        <td class="text-center bold" style="font-weight: 700!important;">{{ total_values.CompteCourant }}</td>
+                        <td class="text-center bold" style="font-weight: 700!important;">{{ total_values.Commercial }}</td>
+                        <td class="text-center bold" style="font-weight: 700!important;">{{ total_values.NDRefac }}</td>
+                        <td class="text-center bold" style="font-weight: 700!important;">{{ total_values.Autre }}</td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </form>
+            
+    </div>
+{% endblock %}
+
+
+
+{% block scriptlocal %}
+    <script src="{% static 'detail/script.js' %}"></script>
+{% endblock %}

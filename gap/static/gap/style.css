@@ -1,0 +1,64 @@
+/* Styles pour la navbar */
+
+.navbar {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row; /* Change the direction to row */
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: row; /* Change the direction to row */
+    align-items: center;
+    justify-content: center;
+    margin: 3% 4%; /* Change the vertical margin to horizontal margin */
+    margin-left: 20px;
+}
+
+.nav-item button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px); /* Change the transform property to translateY */
+}
+
+.nav-item button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 20px 40px;
+    font-size: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 200px; /* Reduce the width to make the buttons smaller */
+    height: 200px; /* Increase the height to make the buttons taller */
+    display: flex;
+    flex-direction: column; /* Change the direction to column to stack the icon and text vertically */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.nav-item button i {
+    font-size: 14px;
+    margin-right: 0;
+    margin-bottom: 5px;
+}
+
+
+/* ---------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+

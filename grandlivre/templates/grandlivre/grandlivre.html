@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Grand livre</title>
+{% endblock %}
+
+
+{% block main_content %}
+<div class="container">
+    <h3 class="text-center" style="position: relative; text-align: center;">GRAND LIVRE PERSONALISE PAR SOCIETE</h3>
+    <form>
+        <label for="societe_select" class="form-label fw-bold">&nbsp; Nom de la société :</label>
+        <select name="societe_select" id="societe_select" class="form-select" required>
+            <option value="" selected>-----------------</option>
+            {% for societe in societes %}
+                <option value="{{ societe.SOCNAME }}">{{ societe.SOCNAME }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <div>
+            <label for="start-date">Mois de début:</label>
+            <input type="month" id="start-date" name="start-date">
+            <label for="end-date">Mois de fin:</label>
+            <input type="month" id="end-date" name="end-date"> &nbsp;
+            <button type="button" onClick="showLoader()" class="btn btn-primary p-1" id="validate">Valider</button>
+            <a onClick="showBriefLoad(0)" style="display:none" id="export-button" href="{% url 'grandlivre:download_grand_livre' %}" class="btn btn-success p-1">Exporter</a>
+        </div>
+    </form>
+</div>
+<div class="container-fluid  mt-5" style="height: 50vh;overflow-y: scroll;">  
+    <table id="example" class="display row-border hover order-column table table-striped table-bordered dataTable nowrap" border-collapse:"collapse" width="50%" role="grid" aria-describedby="example_info" style="width: 100%;" style="color: #005ec2;">
+        <thead class="default sticky-top">
+            <tr role="row" style="background-color: #005ec2; color: white; margin-top:20px; font-size: 11px!important; text-align: center;">
+                <th>SOCIETE</th><th>COMPTE</th><th>INTITULE_COMPTE</th><th>DATE_COMPTABLE</th><th>DATE_SAISIE</th><th>JOURNAL</th><th>PIECE</th><th>FACTURE</th><th>LIBELLE</th><th>TIERS</th><th>INTITULE_TIERS</th><th>ECHEANCE</th><th>LETTRAGE</th><th>DEBIT</th><th>CREDIT</th><th>TYPE_LETTRAGE</th><th>SOLDE</th><th>INTERCO</th><th>ANNEE_MOIS</th><th>TYPE_INTERCO</th><th>TIERS_INTERCO</th></tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+{% endblock %}
+
+
+{% block scriptlocal %}   
+<script>
+    $(function() {  
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');          
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": csrftoken }
+        });
+        
+        $('#validate').click(function(){  
+            var value = $('#societe_select').val();
+            var start = $('#start-date').val();
+            var end = $('#end-date').val(); 
+         
+            $('tbody').html('');
+            if (start === '' || end === ''){
+                alert('Veuillez renseignez les deux dates !');
+            }
+            else if (value === ''){
+                alert('Veuillez choisir une societé !');
+            }
+            else if (validateDatesDetail(start, end) === 'ko'){
+                alert('Erreur de date !');
+            }
+            else{
+
+                $.post("{% url 'grandlivre:grandLivreSociete' %}", { 'societe_select': value, 'start-date':start, 'end-date':end }, function(response) {
+
+                    var data = response.data;                        
+                    for (var i of data) { 
+                        $('tbody').append('<tr id="' + i.id + '"><td>' + i.SOCIETE + '</td><td>' + i.COMPTE + '</td><td>' + i.INTITULE_COMPTE + '</td><td>' + i.DATE_COMPTABLE + '</td><td>' + i.DATE_SAISIE + '</td><td>' + i.JOURNAL + '</td><td>' + i.PIECE + '</td><td>' + i.FACTURE + '</td><td>' + i.LIBELLE + '</td><td>' + i.TIERS + '</td><td>' + i.INTITULE_TIERS + '</td><td>' + i.ECHEANCE + '</td><td>' + i.LETTRAGE + '</td><td>' + i.DEBIT + '</td><td>' + i.CREDIT + '</td><td>' + i.TYPE_LETTRAGE + '</td><td>' + i.SOLDE + '</td><td>' + i.INTERCO + '</td><td>' + i.ANNEE_MOIS + '</td><td>' + i.TYPE_INTERCO + '</td><td>' + i.TIERS_INTERCO + '</td></tr>');
+                    }
+
+                    hideLoader();
+                }); 
+            }            
+        
+        });
+
+        function validateDatesDetail(startDate, endDate) {                    
+            if (startDate && endDate) {
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                
+                if (start > end) {
+                    return 'ko';
+                } 
+                else{
+                    return 'ok';
+                }
+            } 
+        }
+        
+    });
+</script>
+<script src="{% static 'grandlivre/script.js' %}"></script>
+{% endblock %}
