@@ -1,16 +1,15 @@
+/* html {
+    word-break: break-word;
+} */
 
 
-thead th {
-    background-color: #003366; /* Bleu foncé pour les en-têtes */
-    color: white; /* Texte en blanc */
-}
 a.link_element_detail {
 color:black; 
 text-decoration:none;
 }
 
 a.link_element_detail:hover {
-    text-decoration:underline;
+    text-decoration: underline;
 }
 
 
@@ -19,10 +18,10 @@ a.link_element_detail:hover {
 
 
 #openModal {
-    margin: 20px;
-    padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
+    display: flex;
+    justify-content: end;
 }
 
 .modal {
@@ -76,3 +75,42 @@ button {
 button:hover {
     background-color: #45a049; /* Darker green */
 }
+
+
+
+thead th {
+    border-color: var(--button-primary--border-color);
+    background-color: var(--button-primary--background);
+    color: var(--button-primary--text-color);
+    box-shadow: 0 1px #fe5e3766;
+    border: 1px solid;
+    font-size: 15px;
+}
+
+th {
+    background-color: #dfdfdf;
+    border: 1px solid #8f8f8f;
+    color: black;
+}
+td {
+    border: 1px solid #8f8f8f;
+    color: black;
+}
+
+.container-default {
+    max-width: 100%;
+    min-width: auto !important;
+}
+
+table {
+    min-width: 0px !important;
+}
+
+.navbar {
+    padding: 1.5rem 2rem !important;
+}
+
+.heading-style-h1 {
+    text-align: center;
+}
+

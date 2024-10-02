@@ -1,154 +1,360 @@
-{% extends 'base.html' %}
 {% load static %}
-
-{% block title %}
-    <title>Tiers</title>
-{% endblock %}
+{% include "base.html" %}
 
 {% block head %}
-    <!-- for Local import -->
-    <link type="text/css" href="{% static 'tiers/style.css' %}" rel="stylesheet">
+<title>Tiers</title>
+
+<link href="https://cdn.prod.website-files.com/66d56972b3c3c9ac587210c0/css/conto-template.webflow.86c7c63fc.min.css"
+  rel="stylesheet" type="text/css" />
+<style>
+  @media (min-width:992px) {
+    html.w-mod-js:not(.w-mod-ix) [data-w-id="1adeb2e8-374a-8f9c-43c1-aa8284f79b0a"] {
+      -webkit-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+      -moz-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+      -ms-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+      transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+    }
+  }
+
+  @media (max-width:991px) and (min-width:768px) {
+    html.w-mod-js:not(.w-mod-ix) [data-w-id="1adeb2e8-374a-8f9c-43c1-aa8284f79b0a"] {
+      -webkit-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+      -moz-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+      -ms-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+      transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+    }
+  }
+
+  @media (max-width:767px) and (min-width:480px) {
+    html.w-mod-js:not(.w-mod-ix) [data-w-id="1adeb2e8-374a-8f9c-43c1-aa8284f79b0a"] {
+      -webkit-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+      -moz-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+      -ms-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+      transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+    }
+  }
+
+  @media (max-width:479px) {
+    html.w-mod-js:not(.w-mod-ix) [data-w-id="1adeb2e8-374a-8f9c-43c1-aa8284f79b0a"] {
+      -webkit-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+      -moz-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+      -ms-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+      transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+    }
+  }
+</style>
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous" />
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+<script type="text/javascript">
+  WebFont.load({
+    google: {
+      families: ["DM Sans:500", "Inter:regular,500"]
+    }
+  });
+</script>
+
+<style>
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+</style>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<!-- local import -->
+<link type="text/css" href="{% static 'tiers/style.css' %}" rel="stylesheet">
 {% endblock %}
 
-{% block main_content %}
-<div class="container">
-    <br>
-    <h3 class="text-center mb-5" style="position: relative; text-align: center;">TIERS PAR SOCIETE</h3>
-    <form>
-        <label for="societe_select" class="form-label fw-bold">&nbsp; Nom de la société :</label>
-        <select name="societe_select" id="societe_select" class="form-select" onchange="validateDatesDetail()" required>
-            <option value="" selected>-----------------</option>
-            {% for societe in societes %}
-                <option value="{{ societe.SOCNAME }}" >{{ societe.SOCNAME }}</option>
-            {% endfor %}
-        </select>
-        <button type="button" class="btn btn-success mt-3" style="display:none" id="export-button" onclick="exportData()">Exporter</button>
-    </form>
+{% block body %}
+<div class="page-wrapper">
 
-    
-    <div id="popup-overlay_tier" style="display: none" class="popup-overlay" onclick="handleOverlayClick(event)"></div>
-    <div id="popup_tier" class="popup">
-        <div class="popup-content">
-            <div class="popup-header">
-                <span class="close" onclick="closePopupTier()">&times;</span>
-            </div>
-            <div class="popup-body">
-                <form>
-                    <label for="" class="form-label fw-bold">Nom de la société: <span name="span_societe" id="span_societe"></span></label>
-                    <div class="table-container header">
-                        <span>CODE</span>
-                        <span>INTITULE</span>
-                        <span>TIERS</span>
-                        <span>COMPTEGENERAL</span>
-                    </div>
-                    <div class="table-container content">
-                    </div>
-                </form>
-                <div class="popup-footer">
-                    <button type="button" class="bg-success" id="modifier-tier">Modifier</button>
-                    <button type="button" class="cancel" onclick="closePopupTier(0)">Annuler</button>
-                </div>
-            </div>
+  <header class="header">
+    <header class="navbar">
+      <div id="w-node-_9aa87edc-ae7b-d0ac-d73c-3de8c187a903-c187a8ff" class="navbar-left">
+        <a href="{% url 'home:home' %}" aria-current="page" class="navbar-logo w-inline-block w--current">
+          <img src="{% static 'assets/img/Inviso.png' %}" loading="eager" alt="Logo" height="53"
+            class="navbar-logo-image" />
+        </a>
+      </div>
+      <nav class="navbar-menu">
+        <a href="{% url 'home:home' %}" class="navbar-menu-item w-inline-block">
+          <div class="navbar-menu-item-text">Accueil</div>
+        </a>
+        <a href="{% url 'detail:detail' %}" class="navbar-menu-item w-inline-block">
+          <div class="navbar-menu-item-text">Détails</div>
+        </a>
+        <a href="{% url 'recap:recap' %}" class="navbar-menu-item w-inline-block">
+          <div class="navbar-menu-item-text">Recap</div>
+        </a><a href="{% url 'grandlivre:grandlivre' %}" class="navbar-menu-item w-inline-block">
+          <div class="navbar-menu-item-text">Grand Livre</div>
+        </a><a href="{% url 'tiers:tiers' %}" class="navbar-menu-item w-inline-block">
+          <div class="navbar-menu-item-text">Tiers</div>
+        </a>
+        
+        {% comment %} <a href="{% url 'gap:gap' %}" class="navbar-menu-item w-inline-block">
+          <div class="navbar-menu-item-text">Gap</div>
+        </a> {% endcomment %}
+      </nav>
+
+      <div id="w-node-_9aa87edc-ae7b-d0ac-d73c-3de8c187a948-c187a8ff" class="navbar-right">
+        <div class="navbar-right-button">
+          <a href="{% url 'auths:logout' %}" class="button primary w-inline-block">
+            <div class="button-inner-text">Se déconnecter</div>
+          </a>
         </div>
+        <div class="mobile-menu-toggle">
+          <div class="mobile-menu-toggle-inner">
+            <div class="mobile-menu-toggle-line _01"></div>
+            <div class="mobile-menu-toggle-line _02"></div>
+            <div class="mobile-menu-toggle-line _03"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="mobile-menu">
+      <div class="mobile-menu-wrapper">
+        <div class="mobile-menu-nav">
+          <a href="{% url 'home:home' %}" class="mobile-menu-nav-link w-inline-block">
+            <div class="mobile-menu-nav-text">Accueil</div>
+          </a><a href="{% url 'detail:detail' %}" class="mobile-menu-nav-link w-inline-block">
+            <div class="mobile-menu-nav-text">Detail</div>
+          </a><a href="{% url 'recap:recap' %}" class="mobile-menu-nav-link w-inline-block">
+            <div class="mobile-menu-nav-text">Recap</div>
+          </a><a href="{% url 'grandlivre:grandlivre' %}" class="mobile-menu-nav-link w-inline-block">
+            <div class="mobile-menu-nav-text">Grand livre</div>
+          </a><a href="{% url 'tiers:tiers' %}" class="mobile-menu-nav-link w-inline-block">
+            <div class="mobile-menu-nav-text">Tiers</div>
+          </a>
+{% comment %}           
+          <a href="{% url 'gap:gap' %}" class="mobile-menu-nav-link w-inline-block">
+            <div class="mobile-menu-nav-text">Gap</div>
+          </a> {% endcomment %}
+        </div>
+      </div>
     </div>
-    <table id="example" class="display row-border hover order-column table table-striped table-bordered dataTable mt-5 nowrap" border-collapse:"collapse" width="50%" role="grid" aria-describedby="example_info" style="width: 100%;" style="color: #005ec2;">
-        <thead class="default">
-            <tr role="row" style="background-color: #005ec2; color: white; margin-top:20px; font-size: 11px!important; text-align: center;">
-                <th> CODE TIERS </th>
-                <th > INTITULE </th>
-                <th> TIERS </th>
-                <th> COMPTEGENERAL </th>
-                <th>  </th>
-            </tr>
-        </thead>
-        <tbody class="default">
-        </tbody>
-    </table>
+  </header>
+
+  <main class="main-wrapper">
+
+    <section class="section-docs">
+      <div class="padding-global">
+        <div class="container-large">
+          <div class="padding-top padding-huge">
+            <div class="padding-bottom padding-xhuge">
+              <div class="margin-bottom margin-xlarge">
+                <div>
+
+                  <div class="margin-bottom margin-small">
+                    <div class="container-small">
+                      <h1 class="heading-style-h1"><span class="text-color-primary">Tiers</span></h1>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <form method="POST">
+                {% csrf_token %}
+                <label for="societe_select" class="form-label fw-bold">Nom de la société :</label>
+                <select name="societe_select" id="societe_select" class="form-input w-input"
+                  onchange="validateDatesDetail()" required>
+                  <option value="">-----------------</option>
+                  {% for societe in societes %}
+                  <option value="{{ societe.SOCNAME }}">{{ societe.SOCNAME }}</option>
+                  {% endfor %}
+                </select>
+                <br>
+
+                <div class="home-hero-buttons">
+                  <button type="button" class="button w-button" style="display:none; margin:15px" onClick="exportData()"
+                    id="export-button" name="export" value="true">Exporter</button>
+                </div>
+                <br><br>
+              </form>
+
+              {% comment %} ####################################### {% endcomment %}
+
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col"> CODE TIERS</th>
+                    <th scope="col">INTITULE </th>
+                    <th scope="col"> TIERS </th>
+                    <th scope="col"> COMPTEGENERAL </th>
+                    <th scope="col"></th>
+
+                  </tr>
+                </thead>
+
+                <tbody>
+                </tbody>
+
+              </table>
+
+              {% comment %} ####################################### {% endcomment %}
+
+              <form>
+                <!-- pop up -->
+                <div id="popup-overlay_tier" style="display: none" class="popup-overlay"
+                  onclick="handleOverlayClick(event)"></div>
+                <div id="popup_tier" class="popup">
+                  <div class="popup-content">
+                    <div class="popup-header">
+                      <span class="close" onclick="closePopupTier()">&times;</span>
+                    </div>
+                    <div class="popup-body">
+                      <form>
+                        <label for="" class="form-label fw-bold">Nom de la société: <span name="span_societe"
+                            id="span_societe"></span></label>
+                        <div class="table-container header">
+                          <span>CODE</span>
+                          <span>INTITULE</span>
+                          <span>TIERS</span>
+                          <span>COMPTEGENERAL</span>
+                        </div>
+                        <div class="table-container content">
+                        </div>
+                      </form>
+                      <div class="popup-footer">
+                        <button type="button" class="bg-success" id="modifier-tier">Modifier</button>
+                        <button type="button" class="cancel" onclick="closePopupTier(0)">Annuler</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
 </div>
-{% endblock %}
+<script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=66d56972b3c3c9ac587210c0"
+  type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous">
+</script>
+<script src="https://cdn.prod.website-files.com/66d56972b3c3c9ac587210c0/js/webflow.ef0073d0b.js"
+  type="text/javascript">
+</script>
+<style>
+  .w-webflow-badge {
+    display: none !important;
+  }
+</style>
 
-  
-
-{% block scriptlocal %}
-    <script>
-        $(function() {            
-            $('#societe_select').change(function(){
-                var societe = $('#societe_select').val();
-                console.log(societe)
-                if (societe != '') {
-                    document.getElementById("export-button").style.display = "inline";
-                } else {
-                    document.getElementById("export-button").style.display = "none";
-                }
-                var value = $(this).val();
-                $('tbody').html('');
-                $.get("{% url 'tiers:listTiers' %}", { 'societe': value }, function(response) {
-                    var data = response.data;                        
-                    for (var i of data) { $('tbody')
-                        .append('<tr id="' + i.id + '"><td>' + i.code + '</td><td>' + i.intitule + '</td><td>' + i.tiers + '</td><td>' + i.compte + '</td><td><span tr_id="' + i.id + '"  tr_soc="' + value + '"  tr_tiers="' + i.tiers + '"  tr_code="' + i.code + '"  tr_compteg="' + i.compte + '"  tr_intitule="' + i.intitule + '" class="edit" style="color:green; font-weight: bolder;"><a>MODIFIER</a></span></td></tr>');
-                    }
-                    $('.edit').click(function(){  
-                        var id = $(this).attr('tr_id');
-                        $('#span_societe').text($(this).attr('tr_soc'));
-                        showPopupTier();
-                        $('.content').html('<input type="hidden" id="line_modif" name="id" id_line="' + id + '" value="' + $(this).attr('tr_soc')+'"><input type="text" name="code" value="' + $(this).attr('tr_code')+'"><input type="text" name="intitule" value="' + $(this).attr('tr_intitule')+'"><input type="text" name="tiers" value="' + $(this).attr('tr_tiers')+'"><input type="text" name="compteg" value="' + $(this).attr('tr_compteg')+'">');
-                    });
-                });               
-            });
-            $('#modifier-tier').click(function(){ 
-                var userConfirmed = confirm("Are you sure you want to update the data?");
-                if (userConfirmed) {
-                    var id = $('#line_modif').attr('id_line'); 
-                    var code = $('input[name="code"]').val();
-                    var intitule = $('input[name="intitule"]').val();
-                    var tiers = $('input[name="tiers"]').val();
-                    var compteg = $('input[name="compteg"]').val();
-                    var societe = $('#societe_select').val();
-                    $.get("{% url 'tiers:modif_Tiers' %}", { 'id': id, 'code':code, 'intitule':intitule, 'tiers':tiers, 'compteg':compteg, 'societe':societe  }, function(response) { 
-                        console.log(response)
-                        var data = response.data;
-                        var html = '';
-                        for (var i of data) { 
-                            html += '<tr id="' + i.id + '"><td>' + i.code + '</td><td>' + i.intitule + '</td><td>' + i.tiers + '</td><td>' + i.compte + '</td><td><span tr_id="' + i.id + '"  tr_soc="' + id + '"  tr_tiers="' + i.tiers + '"  tr_code="' + i.code + '"  tr_compteg="' + i.compte + '"  tr_intitule="' + i.intitule + '" class="edit">✎</span></td></tr>';
-                        }
-                        $('tbody').html(html);
-                        $('#popup-overlay_tier').css('display', 'none');
-                        $('#popup_tier').css('display', 'none');
-                        $('.edit').click(function(){  
-                            var id = $(this).attr('tr_id');
-                            $('#span_societe').text($(this).attr('tr_soc'));
-                            showPopupTier();
-                            $('.content').html('<input type="hidden" id="line_modif" name="id" id_line="' + id + '" value="' + $(this).attr('tr_soc')+'"><input type="text" name="code" value="' + $(this).attr('tr_code')+'"><input type="text" name="intitule" value="' + $(this).attr('tr_intitule')+'"><input type="text" name="tiers" value="' + $(this).attr('tr_tiers')+'"><input type="text" name="compteg" value="' + $(this).attr('tr_compteg')+'">');
-                        });
-                    });
-                }
-            });
-        });
-        function exportData() {
-            // Submit the form via POST to trigger the export
-            var form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '';
-        
-            // Add CSRF token for security
-            var csrfInput = document.createElement('input');
-            csrfInput.type = 'hidden';
-            csrfInput.name = 'csrfmiddlewaretoken';
-            csrfInput.value = '{{ csrf_token }}';
-            form.appendChild(csrfInput);
-        
-            // Add a hidden field to indicate the export action
-            var exportInput = document.createElement('input');
-            exportInput.type = 'hidden';
-            exportInput.name = 'export';
-            exportInput.value = 'true';
-            form.appendChild(exportInput);
-        
-            // Append the form to the body and submit
-            document.body.appendChild(form);
-            form.submit();
+<script>
+  $(function() {
+    $('#societe_select').change(function() {
+      var societe = $('#societe_select').val();
+      console.log(societe)
+      if (societe != '') {
+        document.getElementById("export-button").style.display = "inline";
+      } else {
+        document.getElementById("export-button").style.display = "none";
+      }
+      var value = $(this).val();
+      $('tbody').html('');
+      $.get("{% url 'tiers:listTiers' %}", {
+        'societe': value
+      }, function(response) {
+        var data = response.data;
+        for (var i of data) {
+          $('tbody')
+            .append('<tr id="' + i.id + '"><td>' + i.code + '</td><td>' + i.intitule + '</td><td>' + i
+              .tiers + '</td><td>' + i.compte + '</td><td><span tr_id="' + i.id + '"  tr_soc="' + value +
+              '"  tr_tiers="' + i.tiers + '"  tr_code="' + i.code + '"  tr_compteg="' + i.compte +
+              '"  tr_intitule="' + i.intitule +
+              '" class="edit" style="color:green; font-weight: bolder;"><a>MODIFIER</a></span></td></tr>');
         }
+        $('.edit').click(function() {
+          var id = $(this).attr('tr_id');
+          $('#span_societe').text($(this).attr('tr_soc'));
+          showPopupTier();
+          $('.content').html('<input type="hidden" id="line_modif" name="id" id_line="' + id +
+            '" value="' + $(this).attr('tr_soc') + '"><input type="text" name="code" value="' + $(
+              this).attr('tr_code') + '"><input type="text" name="intitule" value="' + $(this).attr(
+              'tr_intitule') + '"><input type="text" name="tiers" value="' + $(this).attr(
+            'tr_tiers') + '"><input type="text" name="compteg" value="' + $(this).attr('tr_compteg') +
+            '">');
+        });
+      });
+    });
+    $('#modifier-tier').click(function() {
+      var userConfirmed = confirm("Are you sure you want to update the data?");
+      if (userConfirmed) {
+        var id = $('#line_modif').attr('id_line');
+        var code = $('input[name="code"]').val();
+        var intitule = $('input[name="intitule"]').val();
+        var tiers = $('input[name="tiers"]').val();
+        var compteg = $('input[name="compteg"]').val();
+        var societe = $('#societe_select').val();
+        $.get("{% url 'tiers:modif_Tiers' %}", {
+          'id': id,
+          'code': code,
+          'intitule': intitule,
+          'tiers': tiers,
+          'compteg': compteg,
+          'societe': societe
+        }, function(response) {
+          console.log(response)
+          var data = response.data;
+          var html = '';
+          for (var i of data) {
+            html += '<tr id="' + i.id + '"><td>' + i.code + '</td><td>' + i.intitule + '</td><td>' + i
+              .tiers + '</td><td>' + i.compte + '</td><td><span tr_id="' + i.id + '"  tr_soc="' + id +
+              '"  tr_tiers="' + i.tiers + '"  tr_code="' + i.code + '"  tr_compteg="' + i.compte +
+              '"  tr_intitule="' + i.intitule + '" class="edit">✎</span></td></tr>';
+          }
+          $('tbody').html(html);
+          $('#popup-overlay_tier').css('display', 'none');
+          $('#popup_tier').css('display', 'none');
+          $('.edit').click(function() {
+            var id = $(this).attr('tr_id');
+            $('#span_societe').text($(this).attr('tr_soc'));
+            showPopupTier();
+            $('.content').html('<input type="hidden" id="line_modif" name="id" id_line="' + id +
+              '" value="' + $(this).attr('tr_soc') + '"><input type="text" name="code" value="' + $(
+                this).attr('tr_code') + '"><input type="text" name="intitule" value="' + $(this).attr(
+                'tr_intitule') + '"><input type="text" name="tiers" value="' + $(this).attr(
+                'tr_tiers') + '"><input type="text" name="compteg" value="' + $(this).attr(
+                'tr_compteg') + '">');
+          });
+        });
+      }
+    });
+  });
 
-    </script>
-    <script src="{% static 'tiers/script.js' %}"></script>
+  function exportData() {
+    // Submit the form via POST to trigger the export
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '';
+    // Add CSRF token for security
+    var csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = 'csrfmiddlewaretoken';
+    csrfInput.value = '{{ csrf_token }}';
+    form.appendChild(csrfInput);
+    // Add a hidden field to indicate the export action
+    var exportInput = document.createElement('input');
+    exportInput.type = 'hidden';
+    exportInput.name = 'export';
+    exportInput.value = 'true';
+    form.appendChild(exportInput);
+    // Append the form to the body and submit
+    document.body.appendChild(form);
+    form.submit();
+  }
+</script>
+
+<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'tiers/script.js' %}"></script>
+
 {% endblock %}

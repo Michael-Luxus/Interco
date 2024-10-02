@@ -1,48 +1,257 @@
-{% extends 'base.html' %}
 {% load static %}
+{% include "base.html" %}
 
-{% block title %}
-    <title>Grand livre</title>
+{% block head %}
+<title>Grand livre</title>
+
+<link href="https://cdn.prod.website-files.com/66d56972b3c3c9ac587210c0/css/conto-template.webflow.86c7c63fc.min.css"
+    rel="stylesheet" type="text/css" />
+<style>
+    @media (min-width:992px) {
+        html.w-mod-js:not(.w-mod-ix) [data-w-id="1adeb2e8-374a-8f9c-43c1-aa8284f79b0a"] {
+            -webkit-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+            -moz-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+            -ms-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+            transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+        }
+    }
+
+    @media (max-width:991px) and (min-width:768px) {
+        html.w-mod-js:not(.w-mod-ix) [data-w-id="1adeb2e8-374a-8f9c-43c1-aa8284f79b0a"] {
+            -webkit-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+            -moz-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+            -ms-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+            transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+        }
+    }
+
+    @media (max-width:767px) and (min-width:480px) {
+        html.w-mod-js:not(.w-mod-ix) [data-w-id="1adeb2e8-374a-8f9c-43c1-aa8284f79b0a"] {
+            -webkit-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+            -moz-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+            -ms-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+            transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+        }
+    }
+
+    @media (max-width:479px) {
+        html.w-mod-js:not(.w-mod-ix) [data-w-id="1adeb2e8-374a-8f9c-43c1-aa8284f79b0a"] {
+            -webkit-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+            -moz-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+            -ms-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+            transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
+        }
+    }
+</style>
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous" />
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+<script type="text/javascript">
+    WebFont.load({
+        google: {
+            families: ["DM Sans:500", "Inter:regular,500"]
+        }
+    });
+</script>
+
+<style>
+    * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+</style>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+</script>
+
+<!-- local import -->
+<link type="text/css" href="{% static 'grandlivre/style.css' %}" rel="stylesheet">
 {% endblock %}
 
+{% block body %}
+<div class="page-wrapper">
 
-{% block main_content %}
-<div class="container">
-    <h3 class="text-center" style="position: relative; text-align: center;">GRAND LIVRE PERSONALISE PAR SOCIETE</h3>
-    <form>
-        <label for="societe_select" class="form-label fw-bold">&nbsp; Nom de la société :</label>
-        <select name="societe_select" id="societe_select" class="form-select" required>
-            <option value="" selected>-----------------</option>
-            {% for societe in societes %}
-                <option value="{{ societe.SOCNAME }}">{{ societe.SOCNAME }}</option>
-            {% endfor %}
-        </select>
-        <br>
-        <div>
-            <label for="start-date">Mois de début:</label>
-            <input type="month" id="start-date" name="start-date">
-            <label for="end-date">Mois de fin:</label>
-            <input type="month" id="end-date" name="end-date"> &nbsp;
-            <button type="button" onClick="showLoader()" class="btn btn-primary p-1" id="validate">Valider</button>
-            <a onClick="showBriefLoad(0)" style="display:none" id="export-button" href="{% url 'grandlivre:download_grand_livre' %}" class="btn btn-success p-1">Exporter</a>
+    <header class="header">
+        <header class="navbar">
+            <div id="w-node-_9aa87edc-ae7b-d0ac-d73c-3de8c187a903-c187a8ff" class="navbar-left">
+                <a href="{% url 'home:home' %}" aria-current="page" class="navbar-logo w-inline-block w--current">
+                    <img src="{% static 'assets/img/Inviso.png' %}" loading="eager" alt="Logo" height="53"
+                        class="navbar-logo-image" />
+                </a>
+            </div>
+            <nav class="navbar-menu">
+                <a href="{% url 'home:home' %}" class="navbar-menu-item w-inline-block">
+                    <div class="navbar-menu-item-text">Accueil</div>
+                </a>
+                <a href="{% url 'detail:detail' %}" class="navbar-menu-item w-inline-block">
+                    <div class="navbar-menu-item-text">Détails</div>
+                </a>
+                <a href="{% url 'recap:recap' %}" class="navbar-menu-item w-inline-block">
+                    <div class="navbar-menu-item-text">Recap</div>
+                </a><a href="{% url 'grandlivre:grandlivre' %}" class="navbar-menu-item w-inline-block">
+                    <div class="navbar-menu-item-text">Grand Livre</div>
+                </a><a href="{% url 'tiers:tiers' %}" class="navbar-menu-item w-inline-block">
+                    <div class="navbar-menu-item-text">Tiers</div>
+                </a>
+                {% comment %} <a href="{% url 'gap:gap' %}" class="navbar-menu-item w-inline-block">
+                    <div class="navbar-menu-item-text">Gap</div>
+                </a> {% endcomment %}
+            </nav>
+
+            <div id="w-node-_9aa87edc-ae7b-d0ac-d73c-3de8c187a948-c187a8ff" class="navbar-right">
+                <div class="navbar-right-button">
+                    <a href="{% url 'auths:logout' %}" class="button primary w-inline-block">
+                        <div class="button-inner-text">Se déconnecter</div>
+                    </a>
+                </div>
+                <div class="mobile-menu-toggle">
+                    <div class="mobile-menu-toggle-inner">
+                        <div class="mobile-menu-toggle-line _01"></div>
+                        <div class="mobile-menu-toggle-line _02"></div>
+                        <div class="mobile-menu-toggle-line _03"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="mobile-menu">
+            <div class="mobile-menu-wrapper">
+                <div class="mobile-menu-nav">
+                    <a href="{% url 'detail:detail' %}" class="mobile-menu-nav-link w-inline-block">
+                        <div class="mobile-menu-nav-text">Detail</div>
+                    </a><a href="{% url 'recap:recap' %}" class="mobile-menu-nav-link w-inline-block">
+                        <div class="mobile-menu-nav-text">Recap</div>
+                    </a><a href="{% url 'grandlivre:grandlivre' %}" class="mobile-menu-nav-link w-inline-block">
+                        <div class="mobile-menu-nav-text">Grand livre</div>
+                    </a><a href="{% url 'tiers:tiers' %}" class="mobile-menu-nav-link w-inline-block">
+                        <div class="mobile-menu-nav-text">Tiers</div>
+                    </a>
+                    {% comment %} <a href="{% url 'gap:gap' %}" class="mobile-menu-nav-link w-inline-block">
+                        <div class="mobile-menu-nav-text">Gap</div>
+                    </a> {% endcomment %}
+                </div>
+            </div>
         </div>
-    </form>
-</div>
-<div class="container-fluid  mt-5" style="height: 50vh;overflow-y: scroll;">  
-    <table id="example" class="display row-border hover order-column table table-striped table-bordered dataTable nowrap" border-collapse:"collapse" width="50%" role="grid" aria-describedby="example_info" style="width: 100%;" style="color: #005ec2;">
-        <thead class="default sticky-top">
-            <tr role="row" style="background-color: #005ec2; color: white; margin-top:20px; font-size: 11px!important; text-align: center;">
-                <th>SOCIETE</th><th>COMPTE</th><th>INTITULE_COMPTE</th><th>DATE_COMPTABLE</th><th>DATE_SAISIE</th><th>JOURNAL</th><th>PIECE</th><th>FACTURE</th><th>LIBELLE</th><th>TIERS</th><th>INTITULE_TIERS</th><th>ECHEANCE</th><th>LETTRAGE</th><th>DEBIT</th><th>CREDIT</th><th>TYPE_LETTRAGE</th><th>SOLDE</th><th>INTERCO</th><th>ANNEE_MOIS</th><th>TYPE_INTERCO</th><th>TIERS_INTERCO</th></tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-</div>
-{% endblock %}
+    </header>
 
+    <main class="main-wrapper">
 
-{% block scriptlocal %}   
+        <section class="section-docs">
+            <div class="padding-global">
+                <div class="container-large">
+                    <div class="padding-top padding-huge">
+                        <div class="padding-bottom padding-xhuge">
+                            <div class="margin-bottom margin-xlarge">
+                                <div>
+
+                                    <div class="margin-bottom margin-small">
+                                        <div class="container-small">
+                                            <h1 class="heading-style-h1"><span class="text-color-primary">Grand
+                                                    livre </span>personnalisé</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form method="POST">
+                                {% csrf_token %}
+                                <label for="societe_select" class="form-label fw-bold">&nbsp; Nom de la société
+                                    :</label>
+                                <select name="societe_select" id="societe_select" class="form-input w-input" required>
+                                    <option value="" selected>-----------------</option>
+                                    {% for societe in societes %}
+                                    <option value="{{ societe.SOCNAME }}">{{ societe.SOCNAME }}</option>
+                                    {% endfor %}
+                                </select>
+                                <br>
+
+                                <div class="form-row-1-2">
+                                    <div class="form-field-wrapper">
+                                        <label for="start-date">Mois de début:</label>
+                                        <input class="form-input w-input" type="month" id="start-date" name="start-date"
+                                            value="{{ date_debut }}">
+                                    </div>
+                                    <div class="form-field-wrapper">
+                                        <label for="end-date">Mois de fin:</label>
+                                        <input class="form-input w-input" type="month" id="end-date" name="end-date"
+                                            value="{{ date_fin }}">
+                                    </div>
+                                </div>
+
+                                <button type="button" onClick="showLoader()" class="button primary w-button"
+                                    id="validate">Valider</button>
+                                {% comment %} <a onClick="showBriefLoad(0)" style="margin-left: 7px;" id="export-button"
+                                    href="{% url 'grandlivre:download_grand_livre' %}"
+                                    class="button w-button">Exporter</a> {% endcomment %}
+
+                                <a href="{% url 'grandlivre:download_grand_livre' %}"><button type="button"
+                                        class="button w-button" style="margin-left: 7px;" id="export-button"
+                                        name="export" value="true">Exporter</button></a>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form>
+                <div class="table-container">
+                    <table class="table table-hover" style="margin:12px">
+                        <thead>
+                            <tr>
+                                <th scope="col">SOCIETE</th>
+                                <th scope="col">COMPTE</th>
+                                <th scope="col">INTITULE_COMPTE</th>
+                                <th scope="col">DATE_COMPTABLE</th>
+                                <th scope="col">DATE_SAISIE</th>
+                                <th scope="col">JOURNAL</th>
+                                <th scope="col">PIECE</th>
+                                <th scope="col">FACTURE</th>
+                                <th scope="col">LIBELLE</th>
+                                <th scope="col">TIERS</th>
+                                <th scope="col">INTITULE_TIERS</th>
+                                <th scope="col">ECHEANCE</th>
+                                <th scope="col">LETTRAGE</th>
+                                <th scope="col">DEBIT</th>
+                                <th scope="col">CREDIT</th>
+                                <th scope="col">TYPE_LETTRAGE</th>
+                                <th scope="col">SOLDE</th>
+                                <th scope="col">INTERCO</th>
+                                <th scope="col">ANNEE_MOIS</th>
+                                <th scope="col">TYPE_INTERCO</th>
+                                <th scope="col">TIERS_INTERCO</th>
+                            </tr>
+                        </thead>
+
+                        <!-- content -->
+                        <tbody></tbody>
+
+                    </table>
+
+                </div>
+            </form>
+
+        </section>
+
+    </main>
+
+</div>
+<script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=66d56972b3c3c9ac587210c0"
+    type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous">
+</script>
+<script src="https://cdn.prod.website-files.com/66d56972b3c3c9ac587210c0/js/webflow.ef0073d0b.js"
+    type="text/javascript">
+</script>
+<style>
+    .w-webflow-badge {
+        display: none !important;
+    }
+</style>
+
 <script>
-    $(function() {  
+    $(function() {
         function getCookie(name) {
             let cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -57,56 +266,89 @@
             }
             return cookieValue;
         }
-        const csrftoken = getCookie('csrftoken');          
+        const csrftoken = getCookie('csrftoken');
         $.ajaxSetup({
-            headers: { "X-CSRFToken": csrftoken }
+            headers: {
+                "X-CSRFToken": csrftoken
+            }
         });
-        
-        $('#validate').click(function(){  
+        $('#validate').click(function() {
             var value = $('#societe_select').val();
             var start = $('#start-date').val();
-            var end = $('#end-date').val(); 
-         
+            var end = $('#end-date').val();
             $('tbody').html('');
-            if (start === '' || end === ''){
+            if (start === '' || end === '') {
                 alert('Veuillez renseignez les deux dates !');
-            }
-            else if (value === ''){
+            } else if (value === '') {
                 alert('Veuillez choisir une societé !');
-            }
-            else if (validateDatesDetail(start, end) === 'ko'){
+            } else if (validateDatesDetail(start, end) === 'ko') {
                 alert('Erreur de date !');
-            }
-            else{
-
-                $.post("{% url 'grandlivre:grandLivreSociete' %}", { 'societe_select': value, 'start-date':start, 'end-date':end }, function(response) {
-
-                    var data = response.data;                        
-                    for (var i of data) { 
-                        $('tbody').append('<tr id="' + i.id + '"><td>' + i.SOCIETE + '</td><td>' + i.COMPTE + '</td><td>' + i.INTITULE_COMPTE + '</td><td>' + i.DATE_COMPTABLE + '</td><td>' + i.DATE_SAISIE + '</td><td>' + i.JOURNAL + '</td><td>' + i.PIECE + '</td><td>' + i.FACTURE + '</td><td>' + i.LIBELLE + '</td><td>' + i.TIERS + '</td><td>' + i.INTITULE_TIERS + '</td><td>' + i.ECHEANCE + '</td><td>' + i.LETTRAGE + '</td><td>' + i.DEBIT + '</td><td>' + i.CREDIT + '</td><td>' + i.TYPE_LETTRAGE + '</td><td>' + i.SOLDE + '</td><td>' + i.INTERCO + '</td><td>' + i.ANNEE_MOIS + '</td><td>' + i.TYPE_INTERCO + '</td><td>' + i.TIERS_INTERCO + '</td></tr>');
+            } else {
+                $.post("{% url 'grandlivre:grandLivreSociete' %}", {
+                    'societe_select': value,
+                    'start-date': start,
+                    'end-date': end
+                }, function(response) {
+                    var data = response.data;
+                    console.log(data)
+                    for (var i of data) {
+                        $('tbody').append('<tr id="' + i.id + '"><td>' + i.SOCIETE +
+                            '</td><td>' + i.COMPTE + '</td><td>' + i.INTITULE_COMPTE +
+                            '</td><td>' + i.DATE_COMPTABLE + '</td><td>' + i.DATE_SAISIE +
+                            '</td><td>' + i.JOURNAL + '</td><td>' + i.PIECE + '</td><td>' +
+                            i.FACTURE + '</td><td>' + i.LIBELLE + '</td><td>' + i.TIERS +
+                            '</td><td>' + i.INTITULE_TIERS + '</td><td>' + i.ECHEANCE +
+                            '</td><td>' + i.LETTRAGE + '</td><td>' + i.DEBIT + '</td><td>' +
+                            i.CREDIT + '</td><td>' + i.TYPE_LETTRAGE + '</td><td>' + i
+                            .SOLDE + '</td><td>' + i.INTERCO + '</td><td>' + i.ANNEE_MOIS +
+                            '</td><td>' + i.TYPE_INTERCO + '</td><td>' + i.TIERS_INTERCO +
+                            '</td></tr>');
                     }
-
                     hideLoader();
-                }); 
-            }            
-        
+                });
+            }
         });
 
-        function validateDatesDetail(startDate, endDate) {                    
+        function validateDatesDetail(startDate, endDate) {
             if (startDate && endDate) {
                 const start = new Date(startDate);
                 const end = new Date(endDate);
-                
                 if (start > end) {
                     return 'ko';
-                } 
-                else{
+                } else {
                     return 'ok';
                 }
-            } 
+            }
         }
-        
     });
 </script>
+<script>
+    const tableContainer = document.querySelector('.table-container');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    tableContainer.addEventListener('mousedown', (e) => {
+        isDown = true;
+        tableContainer.classList.add('active');
+        startX = e.pageX - tableContainer.offsetLeft;
+        scrollLeft = tableContainer.scrollLeft;
+    });
+    tableContainer.addEventListener('mouseleave', () => {
+        isDown = false;
+    });
+    tableContainer.addEventListener('mouseup', () => {
+        isDown = false;
+    });
+    tableContainer.addEventListener('mousemove', (e) => {
+        if (!isDown) return; // Exit if mouse is not held down
+        e.preventDefault();
+        const x = e.pageX - tableContainer.offsetLeft;
+        const walk = (x - startX) * 2; // Multiply to adjust scroll speed
+        tableContainer.scrollLeft = scrollLeft - walk;
+    });
+</script>
+
+<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'grandlivre/script.js' %}"></script>
+
 {% endblock %}
