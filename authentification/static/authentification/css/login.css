@@ -361,63 +361,37 @@
 
         /*------------------------------------------------------------------
           [ Button ]*/
-        .container-login100-form-btn {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -moz-box;
-            display: -ms-flexbox;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding-top: 13px;
-        }
-
-        .wrap-login100-form-btn {
-            width: 100%;
-            display: block;
-            position: relative;
-            z-index: 1;
-            border-radius: 25px;
-            overflow: hidden;
-            margin: 0 auto;
-        }
-
-        .login100-form-bgbtn {
-            position: absolute;
-            z-index: -1;
-            width: 300%;
-            height: 100%;
-            background: #000;
-            top: 0;
-            left: -100%;
-
-            -webkit-transition: all 0.4s;
-            -o-transition: all 0.4s;
-            -moz-transition: all 0.4s;
-            transition: all 0.4s;
-        }
-
         .login100-form-btn {
-            font-size: 16px;
-            color: #fff;
-            line-height: 1.2;
-            font-weight: bold;
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -moz-box;
-            display: -ms-flexbox;
-            display: flex;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px; /* Augmente la taille du texte */
+            text-transform: uppercase;
+            color: white;
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            padding: 20px 70px; /* Augmente le padding pour rendre le bouton plus large et plus haut */
+            border-radius: 50px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .login100-form-btn:hover {
+            background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
+            box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* Conteneur pour centrer le bouton */
+        .wrap-login100-form-btn {
+            display: block;
             justify-content: center;
-            align-items: center;
-            padding: 0 20px;
-            width: 100%;
-            height: 50px;
         }
-
-        .wrap-login100-form-btn:hover .login100-form-bgbtn {
-            left: 0;
+        
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #4CAF50; /* Changer la couleur de la bordure au focus */
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Ombre légère pour l'accent */
         }
-
         /*------------------------------------------------------------------
           [ Responsive ]*/
 

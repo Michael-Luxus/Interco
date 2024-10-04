@@ -18,14 +18,39 @@
       }
     }
 
-    @media (max-width:991px) and (min-width:768px) {
-      html.w-mod-js:not(.w-mod-ix) [data-w-id="1adeb2e8-374a-8f9c-43c1-aa8284f79b0a"] {
-        -webkit-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-        -moz-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-        -ms-transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-        transform: translate3d(0px, 0, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);
-      }
-    }
+{% block main_content %}
+    <div class="container" style="display:inline;"> 
+        <ul class="navbar">
+            <li class="nav-item">
+                <a style="text-decoration:none" href="{% url 'detail:detail' %}">
+                    <button><i class="fas fa-list"></i>&nbsp; Détail par societé</button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a style="text-decoration:none" href="{% url 'recap:recap' %}">
+                    <button><i class="fas fa-table"></i>&nbsp; Récap</button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a style="text-decoration:none" href="{% url 'grandlivre:grandlivre' %}">
+                    <button><i class="bi bi-book"></i>&nbsp; Grand livre personalisé</button>
+                </a>
+            </li>
+            {% if access %} 
+                <li class="nav-item">
+                    <a style="text-decoration:none" href="{% url 'tiers:tiers' %}">
+                        <button><i class="fas fa-industry"></i>&nbsp; Plan tiers</button>
+                    </a>
+                </li>
+            {% endif %} 
+            <li class="nav-item" style="display:none;">
+                <a style="text-decoration:none" href="{% url 'gap:gap' %}">
+                    <button><i class="bi bi-zoom-out"></i>&nbsp; Gap</button>
+                </a>
+            </li>
+        </ul>  
+    </div>
+{% endblock %}
 
     @media (max-width:767px) and (min-width:480px) {
       html.w-mod-js:not(.w-mod-ix) [data-w-id="1adeb2e8-374a-8f9c-43c1-aa8284f79b0a"] {
