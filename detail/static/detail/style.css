@@ -114,3 +114,10 @@ table {
     text-align: center;
 }
 
+.zero-value {
+    text-align: end;
+}
+.total_row {
+    text-align: end;
+    font-weight: 700!important;
+}

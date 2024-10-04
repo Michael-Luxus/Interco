@@ -217,18 +217,18 @@
                     </th>
 
                     {% for type in type_interco %}
-                    {% for row in content %}
-                    {% if row.tiers == tiers and row.type_interco == type %}
-                    <td class="{% if row.valeur == '0,00' %}zero-value{% else %}non-zero-value{% endif %}">
-                      {% if row.valeur != "0,00" %}
-                      <a id="openModal" class="link_element_detail text-start"
-                        onclick="openPopupTier('{{ tiers }}', '{{type}}')">{{ row.valeur }}</a>
-                      {% else %}
-                      {{ row.valeur }}
-                      {% endif %}
-                    </td>
-                    {% endif %}
-                    {% endfor %}
+                      {% for row in content %}
+                        {% if row.tiers == tiers and row.type_interco == type %}
+                          <td class="{% if row.valeur == '0,00' %}zero-value{% else %}non-zero-value{% endif %}">
+                            {% if row.valeur != "0,00" %}
+                              <a class="link_element_detail text-start" onclick="openPopupTier('{{tiers}}', '{{type}}')">{{ row.valeur }}</a>
+                              {% comment %} <a id="" class="link_element_detail text-start" onclick="console.log('called')">{{ tiers }} {{type}} {{ row.valeur }}</a> {% endcomment %}
+                            {% else %}
+                                0,00
+                            {% endif %}
+                          </td>
+                        {% endif %}
+                      {% endfor %}
                     {% endfor %}
                   </tr>
                   {% endfor %}
@@ -237,12 +237,12 @@
                   <tr>
                     <th style="background:#fe5e3766" scope="row">TOTAL</th>
 
-                    <td style="font-weight: 700!important;">{{ total_values.global }}</td>
-                    <td class="bold" style="font-weight: 700!important;">{{ total_values.Financier }}</td>
-                    <td class="bold" style="font-weight: 700!important;">{{ total_values.CompteCourant }}</td>
-                    <td class="bold" style="font-weight: 700!important;">{{ total_values.Commercial }}</td>
-                    <td class="bold" style="font-weight: 700!important;">{{ total_values.NDRefac }}</td>
-                    <td class="bold" style="font-weight: 700!important;">{{ total_values.Autre }}</td>
+                    <td class="bold total_row">{{ total_values.global }}</td>
+                    <td class="bold total_row">{{ total_values.Financier }}</td>
+                    <td class="bold total_row">{{ total_values.CompteCourant }}</td>
+                    <td class="bold total_row">{{ total_values.Commercial }}</td>
+                    <td class="bold total_row">{{ total_values.NDRefac }}</td>
+                    <td class="bold total_row">{{ total_values.Autre }}</td>
 
                   </tr>
 
@@ -421,6 +421,16 @@
 
                 <script>
                   function openPopupTier(tiers, type) {
+
+                    // affiche le modal popup
+                    let modal = document.getElementById("popupModal");
+                    modal.style.display = "block";
+
+
+
+                    console.log(tiers);
+
+
                     if (modal != null) {
                       // ouvre le popup
                       modal.style.display = "block";
@@ -441,11 +451,14 @@
                         "&end=" + end +
                         "&tiers=" + tiers +
                         "&type=" + type;
+
+                        console.log(url);
+
                       // Envoyer une requête à l'URL pour récupérer le JSON
                       fetch(url)
                         .then(response => {
                           if (!response.ok) {
-                            throw new Error('Erreur lors de la récupération du JSON');
+                            throw new Error('Erreur lors de la récupération du JSON: ' + response.json());
                           }
                           return response.json();
                         })

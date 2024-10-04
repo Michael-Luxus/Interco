@@ -3,14 +3,14 @@
 
 
 const modal = document.getElementById("popupModal");
-const openModalButton = document.getElementById("openModal");
+// const openModalButton = document.getElementById("openModal");
 const closeButton = document.querySelector(".close-button");
 const cancelButton = document.getElementById("cancelButton");
 
 // Open the modal
-openModalButton.onclick = function() {
-    modal.style.display = "block";
-}
+// openModalButton.onclick = function() {
+//     modal.style.display = "block";
+// }
 
 // Close the modal when the close button is clicked
 closeButton.onclick = function() {

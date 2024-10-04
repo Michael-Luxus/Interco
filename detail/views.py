@@ -220,6 +220,12 @@ def getValues(societe, tiers, type, year_start, year_end, month_start, month_end
 
 def getPopupValues(societe, tiers, type_interco, year_start, year_end, month_start, month_end):
 
+    type_filtre = f" AND GRAND_LIVRE.TYPE_INTERCO IN ('{type_interco}') "
+
+    if type_interco == "global":
+        type_filtre = ""
+        
+
     try:
 
         req = f""" SELECT COMPTE, INTITULE_COMPTE, DATE_COMPTABLE, DATE_SAISIE, JOURNAL, PIECE, FACTURE, LIBELLE, GRAND_LIVRE.TIERS, INTITULE_TIERS, ECHEANCE, LETTRAGE, DEBIT, CREDIT, TYPE_LETTRAGE, SOLDE, INTERCO, ANNEE_MOIS, TYPE_INTERCO                                        
@@ -232,10 +238,12 @@ def getPopupValues(societe, tiers, type_interco, year_start, year_end, month_sta
                 TABLE_TIERS.TIERS = '{tiers}' 
                 AND TABLE_TIERS.SOCIETE = '{societe}' 
                 AND GRAND_LIVRE.SOCIETE = '{societe}'
-                AND GRAND_LIVRE.TYPE_INTERCO IN ('{type_interco}')
+                {type_filtre}
                 AND month(GRAND_LIVRE.DATE_COMPTABLE) BETWEEN '{month_start}' AND '{month_end}' AND year(GRAND_LIVRE.DATE_COMPTABLE) BETWEEN '{year_start}' AND '{year_end}'  
                 """
         
+        print("req: ", req)
+
         cursor.execute(req)
         return cursor.fetchall()
 
@@ -310,6 +318,9 @@ def detail_Individuel(request):
 
             # Return the result as JSON
             return JsonResponse(resultat)
+        
+        else:
+            print("eeeeeeeeeeeeeeeeeeeeeeeeee")
 
   
 
