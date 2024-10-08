@@ -85,8 +85,12 @@ def download_grand_livre(request):
 def export_simple_xls():
     global global_result
 
-    # Create a DataFrame from the global result
+    # Convert the global result to a DataFrame
     df = pd.DataFrame(global_result)
+
+    # Convert values to numbers where applicable
+    for column in df.columns:
+        df[column] = pd.to_numeric(df[column], errors='coerce')  # Convert to numeric, setting errors to NaN if conversion fails
 
     # Create an in-memory output
     output = BytesIO()
@@ -125,6 +129,9 @@ def export_simple_xls():
         output,
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
-    response['Content-Disposition'] = 'attachment; filename="grand_livre.xlsx"'
+    response['Content-Disposition'] = 'attachment; filename="grand_livre_societe.xlsx"'
 
     return response
+
+
+  

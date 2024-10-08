@@ -113,74 +113,103 @@ def detail(request):
 
 
 def export_xls(content, societes_list, type_interco, total_values, headers):
-        # Create a DataFrame
-        data = []
-        for tiers in societes_list:
-            row = [tiers]
-            for type in type_interco:
-                for item in content:
-                    if item['tiers'] == tiers and item['type_interco'] == type:
-                        row.append(item['valeur'])
-            data.append(row)
-
-        # Add total row
-        total_row = ["TOTAL"]
+    # Créer une DataFrame avec des valeurs numériques
+    data = []
+    for tiers in societes_list:
+        row = [tiers]  # La première colonne contient les tiers
         for type in type_interco:
-            type = type.replace("-", "").replace(" ", "")
-            total_row.append(total_values[type])
-        data.append(total_row)
+            for item in content:
+                if item['tiers'] == tiers and item['type_interco'] == type:
+                    valeur = item['valeur']
+                    if isinstance(valeur, str):
+                        # Supprimer les espaces insécables et remplacer les virgules
+                        valeur = valeur.replace('\xa0', '').replace(',', '')
+                        try:
+                            valeur = float(valeur)  # Essayer de convertir en float
+                        except ValueError:
+                            valeur = None  # Gérer les valeurs qui ne peuvent pas être converties
+                    row.append(valeur)
+        data.append(row)
 
-        df = pd.DataFrame(data, columns=["TIERS"] + headers[1:])
+    # Ajouter une ligne total avec des valeurs numériques
+    total_row = ["TOTAL"]
+    for type in type_interco:
+        type = type.replace("-", "").replace(" ", "")
+        total_value = total_values.get(type, None)  # Utiliser get pour éviter KeyError
+        if isinstance(total_value, str):
+            # Supprimer les espaces insécables et remplacer les virgules
+            total_value = total_value.replace('\xa0', '').replace(',', '')
+            try:
+                total_value = float(total_value)
+            except ValueError:
+                total_value = None
+        total_row.append(total_value)
+    data.append(total_row)
 
-        # Create an Excel writer using openpyxl engine
-        output = BytesIO()
-        with pd.ExcelWriter(output, engine='openpyxl') as writer:
-            df.to_excel(writer, index=False, sheet_name='Data')
+    # Créer un DataFrame avec les données
+    df = pd.DataFrame(data, columns=["TIERS"] + headers[1:])
 
-            # Get the workbook and worksheet
-            # workbook = writer.book
-            worksheet = writer.sheets['Data']
+    # Créer un writer Excel en utilisant openpyxl
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Data')
 
-            # Set column widths to fit the content
-            for col in worksheet.columns:
-                max_length = 0
-                column = col[0].column_letter  # Get the column name
-                for cell in col:
-                    try:
-                        if len(str(cell.value)) > max_length:
-                            max_length = len(cell.value)
-                    except:
-                        pass
-                adjusted_width = (max_length + 2)
-                worksheet.column_dimensions[column].width = adjusted_width
+        # Obtenir la feuille de travail
+        worksheet = writer.sheets['Data']
 
-            # Header row styling: background #005ec2, white, bold
-            header_font = Font(bold=True, color="FFFFFF")
-            header_fill = PatternFill(start_color="005ec2", end_color="005ec2", fill_type="solid")
-            alignment = Alignment(horizontal="center", vertical="center")
+        # Ajuster la largeur des colonnes pour s'adapter au contenu
+        for col in worksheet.columns:
+            max_length = 0
+            column = col[0].column_letter  # Obtenir le nom de la colonne
+            for cell in col:
+                try:
+                    if cell.value:  # Vérifier si la cellule a une valeur
+                        max_length = max(max_length, len(str(cell.value)))
+                except:
+                    pass
+            adjusted_width = max_length + 2  # Ajouter un peu de marge
+            worksheet.column_dimensions[column].width = adjusted_width
 
-            for cell in worksheet[1]:  # First row (header)
-                cell.font = header_font
-                cell.fill = header_fill
-                cell.alignment = alignment
+        # Appliquer le format de nombre aux colonnes contenant des valeurs numériques
+        number_format = '#,##0.00'  # Format numérique avec milliers et deux décimales
+        for row in worksheet.iter_rows(min_row=2, max_row=worksheet.max_row, min_col=2, max_col=worksheet.max_column):
+            for cell in row:
+                if isinstance(cell.value, (float, int)):  # Vérifier si c'est une valeur numérique
+                    cell.number_format = number_format
 
-            # First column styling (tiers column)
-            for row in worksheet.iter_rows(min_row=2, max_row=worksheet.max_row, min_col=1, max_col=1):
-                for cell in row:
-                    cell.font = Font(bold=True, color="FFFFFF")
-                    cell.fill = PatternFill(start_color="005ec2", end_color="005ec2", fill_type="solid")
-                    cell.alignment = Alignment(horizontal="center", vertical="center")
+        # Style des en-têtes : fond bleu #005ec2, texte blanc, gras
+        header_font = Font(bold=True, color="FFFFFF")
+        header_fill = PatternFill(start_color="005ec2", end_color="005ec2", fill_type="solid")
+        alignment = Alignment(horizontal="center", vertical="center")
 
-            # Color the first cell in the last row (TOTAL) red
-            total_cell = worksheet.cell(row=worksheet.max_row, column=1)  # The first column in the last row
-            total_cell.font = Font(bold=True, color="000000")
-            total_cell.fill = PatternFill(start_color="95fff6", end_color="95fff6", fill_type="solid") 
+        for cell in worksheet[1]:  # Première ligne (en-têtes)
+            cell.font = header_font
+            cell.fill = header_fill
+            cell.alignment = alignment
 
+        # Style de la première colonne (colonne des tiers)
+        for row in worksheet.iter_rows(min_row=2, max_row=worksheet.max_row, min_col=1, max_col=1):
+            for cell in row:
+                cell.font = Font(bold=True, color="FFFFFF")
+                cell.fill = PatternFill(start_color="005ec2", end_color="005ec2", fill_type="solid")
+                cell.alignment = Alignment(horizontal="center", vertical="center")
 
-        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = f'attachment; filename="details.xlsx"'
-        response.write(output.getvalue())
-        return response
+        # Colorier la première cellule de la dernière ligne (TOTAL) en bleu clair
+        total_cell = worksheet.cell(row=worksheet.max_row, column=1)  # Première colonne dans la dernière ligne
+        total_cell.font = Font(bold=True, color="000000")
+        total_cell.fill = PatternFill(start_color="95fff6", end_color="95fff6", fill_type="solid")
+
+        # Appliquer le format de nombre à toute la ligne du total
+        for cell in worksheet.iter_rows(min_row=worksheet.max_row, max_row=worksheet.max_row, min_col=2, max_col=worksheet.max_column):
+            for cell_value in cell:
+                if isinstance(cell_value.value, (float, int)):
+                    cell_value.number_format = number_format
+
+    # Réponse HTTP pour télécharger le fichier
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename="details_par_société.xlsx"'
+    response.write(output.getvalue())
+    return response
 
 
 def getValues(societe, tiers, type, year_start, year_end, month_start, month_end):
@@ -324,28 +353,7 @@ def detail_Individuel(request):
 
   
 
-# def export_popup_to_xls():
-#     global global_data_pop
-    
-#     # Define the headers
-#     labels = [
-#         "COMPTE", "INTITULE_COMPTE", "DATE_COMPTABLE", "DATE_SAISIE", "JOURNAL", 
-#         "PIECE", "FACTURE", "LIBELLE", "TIERS", "INTITULE_TIERS", "ECHEANCE", 
-#         "LETTRAGE", "DEBIT", "CREDIT", "TYPE_LETTRAGE", "SOLDE", "INTERCO", 
-#         "ANNEE_MOIS", "TYPE_INTERCO"
-#     ]
-    
-#     # Convert global_data_pop to a DataFrame
-#     df = pd.DataFrame(global_data_pop, columns=labels)
 
-#     # Create an HTTP response with XLS content type
-#     response = HttpResponse(content_type='application/vnd.ms-excel')
-#     response['Content-Disposition'] = 'attachment; filename="details_pop.xlsx"'
-    
-#     # Write the DataFrame to the response as an Excel file
-#     df.to_excel(response, index=False)
-
-#     return response
 
 def export_popup_to_xls():
     global global_data_pop
@@ -360,6 +368,11 @@ def export_popup_to_xls():
     
     # Convert global_data_pop to a DataFrame
     df = pd.DataFrame(global_data_pop, columns=labels)
+
+    # Convert "DEBIT", "CREDIT", and "SOLDE" columns to numeric values
+    df["DEBIT"] = pd.to_numeric(df["DEBIT"].astype(str).str.replace('\xa0', '').str.replace(',', ''), errors='coerce')
+    df["CREDIT"] = pd.to_numeric(df["CREDIT"].astype(str).str.replace('\xa0', '').str.replace(',', ''), errors='coerce')
+    df["SOLDE"] = pd.to_numeric(df["SOLDE"].astype(str).str.replace('\xa0', '').str.replace(',', ''), errors='coerce')
 
     # Create an HTTP response with XLS content type
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
@@ -394,26 +407,32 @@ def export_popup_to_xls():
         for cell in worksheet[last_row]:
             cell.font = bold_font
 
-
         # Format M, N, P columns (12th, 13th, and 15th columns)
         millennium_format = '#,##0.00'
-        worksheet[f'M{last_row}'].number_format = millennium_format  # DEBIT column
-        worksheet[f'N{last_row}'].number_format = millennium_format  # CREDIT column
-        worksheet[f'P{last_row}'].number_format = millennium_format  # SOLDE column
+        for row in worksheet.iter_rows(min_row=2, max_row=last_row, min_col=13, max_col=13):
+            for cell in row:
+                cell.number_format = millennium_format  # DEBIT column
 
+        for row in worksheet.iter_rows(min_row=2, max_row=last_row, min_col=14, max_col=14):
+            for cell in row:
+                cell.number_format = millennium_format  # CREDIT column
 
-        # Auto-size all columns
+        for row in worksheet.iter_rows(min_row=2, max_row=last_row, min_col=16, max_col=16):
+            for cell in row:
+                cell.number_format = millennium_format  # SOLDE column
+
+        # **Auto-size all columns**
         for col in worksheet.columns:
             max_length = 0
             column = col[0].column_letter  # Get the column name
             for cell in col:
-                try:  # Ignore empty cells
+                try:
                     if cell.value:
-                        max_length = max(max_length, len(str(cell.value)))
+                        # Adjust max length to handle large numeric values
+                        max_length = max(max_length, len(str(cell.value)) + 2)
                 except:
                     pass
             adjusted_width = (max_length + 2)  # Add a little extra space for padding
             worksheet.column_dimensions[column].width = adjusted_width
 
     return response
-

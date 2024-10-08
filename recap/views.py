@@ -84,7 +84,13 @@ def export_xls(content, societes_list):
             if societe == societe2:
                 row.append("")  # Case vide pour la diagonale
             else:
+                # Récupérer la valeur et convertir en float si possible
                 val = next((item['valeur'] for item in content if item['societex'] == societe and item['societey'] == societe2), "0,00")
+                try:
+                    # Convertir en float après nettoyage des chaînes
+                    val = float(val.replace(",", ".").replace(" ", "").replace("\xa0", ""))
+                except ValueError:
+                    val = 0.0  # Valeur par défaut si la conversion échoue
                 row.append(val)
         data.append(row)
 
@@ -99,10 +105,10 @@ def export_xls(content, societes_list):
     # Personnalisation des styles (background et texte)
     sheet = writer.sheets['Intercompany']
 
-    # Define styles
+    # Définir les styles
     blue_fill = PatternFill(start_color="005ec2", end_color="005ec2", fill_type="solid")
     white_font = Font(color="FFFFFF", bold=True)
-    yellow_fill = PatternFill(start_color="ffc107", end_color="ffc107", fill_type="solid")  # Yellow fill for diagonal
+    yellow_fill = PatternFill(start_color="ffc107", end_color="ffc107", fill_type="solid")  # Couleur jaune pour la diagonale
 
     # Appliquer le style aux colonnes (header)
     for cell in sheet[1]:
@@ -115,23 +121,33 @@ def export_xls(content, societes_list):
             cell.fill = blue_fill
             cell.font = white_font
 
-    # Color the diagonal cells yellow
+    # Colorier les cellules diagonales en jaune
     for i in range(2, len(societes_list) + 2):
         sheet.cell(row=i, column=i).fill = yellow_fill
 
-
-    # Adjust column widths based on the content
+    # Ajuster la largeur des colonnes en fonction du contenu (y compris l'en-tête)
     for col in sheet.columns:
         max_length = 0
         column = col[0].column_letter
+        
+        # Vérifier chaque cellule de la colonne
         for cell in col:
-            try:
-                if cell.value:
+            if cell.value:
+                # Vérifier la longueur de la chaîne et ajuster la longueur maximale
+                try:
                     max_length = max(max_length, len(str(cell.value)))
-            except:
-                pass
-        adjusted_width = max_length + 2
+                except:
+                    pass
+        
+        adjusted_width = max_length + 2  # Ajouter un peu d'espace pour l'esthétique
         sheet.column_dimensions[column].width = adjusted_width
+
+    # Appliquer le format de nombre aux cellules contenant des valeurs numériques
+    number_format = '#,##0.00'  # Format numérique avec deux décimales
+    for row in sheet.iter_rows(min_row=2, max_row=sheet.max_row, min_col=2, max_col=sheet.max_column):
+        for cell in row:
+            if isinstance(cell.value, (float, int)):  # Vérifier si c'est une valeur numérique
+                cell.number_format = number_format
 
     writer.close()
 
