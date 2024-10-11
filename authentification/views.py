@@ -90,10 +90,15 @@ def logout_ldap(request):
     return redirect('auths:login')
 
 def authenticate_and_get_user(username, password):
+    if username == "rollytresorerie":
+        login = "rolly tresorerie"
+    else:
+        login = username
+
     """
     Authentifie l'utilisateur avec LDAP et retourne l'objet utilisateur.
     """
-    connexion = ldap_login_connection(username=username, password=password)
+    connexion = ldap_login_connection(username=login, password=password)
     if connexion:
         try:
             # On suppose que `ldap_login_connection` renvoie un utilisateur LDAP valide
